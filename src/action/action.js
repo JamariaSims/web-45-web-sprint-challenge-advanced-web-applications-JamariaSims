@@ -13,7 +13,6 @@ export const loginStart = (values) => (dispatch) => {
       password: password,
     })
     .then((response) => {
-      console.log(response);
       dispatch({ type: LOGIN_SUCCUSS, payload: response.data.payload });
     })
     .catch((response) => {

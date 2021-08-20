@@ -4,15 +4,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import BubblePage from "./BubblePage";
+import Login from "./Login";
 
 function PrivateRoute(props) {
-  console.log(props);
   return props.token !== "" ? (
     <>
       <BubblePage />
     </>
   ) : (
-    <h1>Loading...</h1>
+    <Login />
   );
 }
 function mapStateToProps(state) {

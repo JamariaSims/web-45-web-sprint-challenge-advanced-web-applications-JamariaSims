@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import BubblePage from "./BubblePage";
-import LoginForm from "./LoginForm";
+import { makeStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Button from "@material-ui/core/Button";
+import { loginStart } from "../action/action";
+import PrivateRoute from "./PrivateRoute";
 const Login = (props) => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
@@ -10,17 +19,92 @@ const Login = (props) => {
     password: "",
     showPassword: false,
   });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleSubmit = (event) => {
+    props.loginStart(values);
+  };
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      flexWrap: "wrap",
+      width: "100%",
+      margin: "0% auto",
+      padding: "0% auto",
+      flexDirection: "column",
+    },
+    input: {
+      display: "flex",
+      width: "50%",
+      margin: "0% auto",
+      padding: "0% auto",
+    },
+    button: {
+      display: "flex",
+      width: "50%",
+      margin: "0% auto",
+      padding: "0% auto",
+      marginTop: "5%",
+    },
+  }));
   const error = props.error;
+  const classes = useStyles();
   return (
     <div>
       <h1>Welcome to the Bubble App!</h1>
       {props.Token ? (
-        <BubblePage />
+        <PrivateRoute />
       ) : (
         <>
-          {" "}
           <div data-testid="loginForm" className="login-form">
-            <LoginForm values={values} setValues={setValues} />
+            <div className={classes.root}>
+              <FormControl className={classes.input}>
+                <InputLabel>Username</InputLabel>
+                <Input
+                  id="username"
+                  type={"text"}
+                  value={values.username}
+                  onChange={handleChange("username")}
+                />
+              </FormControl>
+              <FormControl className={classes.input}>
+                <InputLabel>Password</InputLabel>
+                <Input
+                  id="password"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={handleChange("password")}
+                  endAdornment={
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  }
+                />
+                <Button
+                  id="submit"
+                  onClick={handleSubmit}
+                  className={classes.button}
+                  variant="outlined"
+                  color="primary"
+                >
+                  Login
+                </Button>
+              </FormControl>
+            </div>
           </div>
           <p id="error" className="error">
             {error}
@@ -35,7 +119,7 @@ function mapStateToProps(state) {
     error: state.error,
   };
 }
-export default connect(mapStateToProps, {})(Login);
+export default connect(mapStateToProps, { loginStart })(Login);
 
 //Task List:
 //1. Build a form containing a username and password field.

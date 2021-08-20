@@ -4,6 +4,7 @@ const initialState = {
   username: "",
   password: "",
   error: "",
+  userToken: "",
   isFetching: false,
 };
 export default function reducer(state = initialState, action) {
@@ -13,7 +14,12 @@ export default function reducer(state = initialState, action) {
     }
     case LOGIN_SUCCUSS: {
       localStorage.setItem("TOKEN", JSON.stringify(action.payload));
-      return { ...state, isFetching: false, error: "" };
+      return {
+        ...state,
+        isFetching: false,
+        error: "",
+        userToken: action.payload,
+      };
     }
     case LOGIN_FAIL: {
       return {

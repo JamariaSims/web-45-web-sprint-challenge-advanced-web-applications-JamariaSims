@@ -5,7 +5,7 @@ const axiosWithAuth = () => {
     headers: {
       authorization: token,
     },
-    baseURL: "http://localhost:5000/",
+    baseURL: "http://localhost:5000/api",
   });
 };
 //Task List:

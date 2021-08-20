@@ -12,14 +12,26 @@ const BubblePage = () => {
     setEditing(value);
   };
 
-  const saveEdit = (editColor) => {};
+  const saveEdit = (editColor) => {
+    setEditing(true);
+    fetchColorService(`PUT`, `/colors/${editColor.id}`, editColor);
+    setEditing(false);
+  };
 
-  const deleteColor = (colorToDelete) => {};
+  const deleteColor = (colorToDelete) => {
+    console.log(colorToDelete);
+    fetchColorService(`DELETE`, `/colors/${colorToDelete.id}`, colorToDelete);
+    setColors(
+      colors.filter((color) => {
+        return color !== colorToDelete;
+      })
+    );
+  };
   useEffect(() => {
-    fetchColorService().then((response) => {
+    fetchColorService(`GET`, `/colors`).then((response) => {
       setColors(response.data);
     });
-  }, []);
+  }, [editing]);
   return (
     <div className="container">
       <ColorList

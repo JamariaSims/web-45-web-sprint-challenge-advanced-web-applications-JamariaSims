@@ -1,40 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { loginStart } from "../action/action";
+import BubblePage from "./BubblePage";
 import LoginForm from "./LoginForm";
-import PrivateRoute from "./PrivateRoute";
 const Login = (props) => {
-  console.log(props);
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
-
+  console.log(props);
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+    showPassword: false,
+  });
   const error = props.error;
-  //replace with error state
-
   return (
     <div>
       <h1>Welcome to the Bubble App!</h1>
-      <div data-testid="loginForm" className="login-form">
-        <h2>Build login form here</h2>
-        <LoginForm />
-        <PrivateRoute />
-      </div>
-
-      <p id="error" className="error">
-        {error}
-      </p>
+      {props.token ? (
+        <>
+          <BubblePage />
+        </>
+      ) : (
+        <>
+          {" "}
+          <div data-testid="loginForm" className="login-form">
+            <LoginForm values={values} setValues={setValues} />
+          </div>
+          <p id="error" className="error">
+            {error}
+          </p>
+        </>
+      )}
     </div>
   );
 };
 function mapStateToProps(state) {
   return {
-    username: state.username,
-    password: state.password,
-    token: state.token,
     error: state.error,
+    token: state.token,
   };
 }
-export default connect(mapStateToProps, { loginStart })(Login);
+export default connect(mapStateToProps, {})(Login);
 
 //Task List:
 //1. Build a form containing a username and password field.

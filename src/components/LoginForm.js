@@ -7,7 +7,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
-
+import { loginStart } from "../action/action";
+import { connect } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -32,14 +33,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginForm() {
+function LoginForm(props) {
+  const { values, setValues } = props;
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    username: "",
-    password: "",
-    showPassword: false,
-  });
-
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -51,12 +47,17 @@ export default function LoginForm() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    props.loginStart(values);
+  };
 
   return (
     <div className={classes.root}>
       <FormControl className={classes.input}>
         <InputLabel>Username</InputLabel>
         <Input
+          id="username"
           type={"text"}
           value={values.username}
           onChange={handleChange("username")}
@@ -65,6 +66,7 @@ export default function LoginForm() {
       <FormControl className={classes.input}>
         <InputLabel>Password</InputLabel>
         <Input
+          id="password"
           type={values.showPassword ? "text" : "password"}
           value={values.password}
           onChange={handleChange("password")}
@@ -78,10 +80,17 @@ export default function LoginForm() {
             </IconButton>
           }
         />
-        <Button className={classes.button} variant="outlined" color="primary">
+        <Button
+          id="submit"
+          onClick={handleSubmit}
+          className={classes.button}
+          variant="outlined"
+          color="primary"
+        >
           Login
         </Button>
       </FormControl>
     </div>
   );
 }
+export default connect(null, { loginStart })(LoginForm);

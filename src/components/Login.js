@@ -1,13 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import { loginStart } from "../action/action";
-
+import LoginForm from "./LoginForm";
+import PrivateRoute from "./PrivateRoute";
 const Login = (props) => {
-  props.loginStart();
+  console.log(props);
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
-  const error = "";
+  const error = props.error;
   //replace with error state
 
   return (
@@ -15,6 +16,8 @@ const Login = (props) => {
       <h1>Welcome to the Bubble App!</h1>
       <div data-testid="loginForm" className="login-form">
         <h2>Build login form here</h2>
+        <LoginForm />
+        <PrivateRoute />
       </div>
 
       <p id="error" className="error">
@@ -23,8 +26,15 @@ const Login = (props) => {
     </div>
   );
 };
-
-export default connect(null, { loginStart })(Login);
+function mapStateToProps(state) {
+  return {
+    username: state.username,
+    password: state.password,
+    token: state.token,
+    error: state.error,
+  };
+}
+export default connect(mapStateToProps, { loginStart })(Login);
 
 //Task List:
 //1. Build a form containing a username and password field.

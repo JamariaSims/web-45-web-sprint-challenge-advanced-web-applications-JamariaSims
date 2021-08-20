@@ -4,7 +4,7 @@ const initialState = {
   username: "",
   password: "",
   token: "",
-  error: null,
+  error: "",
   isFetching: false,
 };
 export default function reducer(state = initialState, action) {

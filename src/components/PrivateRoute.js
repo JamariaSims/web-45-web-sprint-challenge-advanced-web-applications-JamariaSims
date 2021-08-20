@@ -9,7 +9,7 @@ import { Component } from "react";
 
 function PrivateRoute({ children, ...rest }) {
   const userToken = localStorage.getItem("TOKEN");
-  return userToken === null ? (
+  return userToken ? (
     <Route
       {...rest}
       render={() => {

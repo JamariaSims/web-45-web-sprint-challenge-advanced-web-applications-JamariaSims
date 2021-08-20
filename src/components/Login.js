@@ -32,8 +32,8 @@ const Login = (props) => {
     event.preventDefault();
     props.loginStart(values);
     if (props.userToken) {
-      history.push("/PrivateRoute");
       localStorage.setItem("TOKEN", JSON.stringify(props.userToken));
+      history.push("/PrivateRoute");
     }
   };
   const useStyles = makeStyles((theme) => ({

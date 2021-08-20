@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
 import fetchColorService from "../services/fetchColorService";
-import { connect } from "react-redux";
 
-const BubblePage = (props) => {
-  console.log(fetchColorService());
-
+const BubblePage = () => {
   const [colors, setColors] = useState([]);
   const [editing, setEditing] = useState(false);
 
@@ -18,7 +15,11 @@ const BubblePage = (props) => {
   const saveEdit = (editColor) => {};
 
   const deleteColor = (colorToDelete) => {};
-
+  useEffect(() => {
+    fetchColorService().then((response) => {
+      setColors(response.data);
+    });
+  }, []);
   return (
     <div className="container">
       <ColorList
@@ -33,7 +34,7 @@ const BubblePage = (props) => {
   );
 };
 
-export default connect(null, { fetchColorService })(BubblePage);
+export default BubblePage;
 
 //Task List:
 //1. When the component mounts, make an axios call to retrieve all color data and push to state.

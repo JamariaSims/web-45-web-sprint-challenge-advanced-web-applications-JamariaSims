@@ -1,17 +1,14 @@
 import axios from "axios";
-import { connect } from "react-redux";
 const axiosWithAuth = () => {
-  const token = localStorage.getItem("TOKEN");
+  const token = JSON.parse(localStorage.getItem("TOKEN"));
   return axios.create({
-    headers: { token: token },
-    data: {
-      username: "Lambda",
-      password: "School",
+    headers: {
+      authorization: token,
     },
-    baseURL: "http://localhost:5000/api/",
+    baseURL: "http://localhost:5000/",
   });
 };
 //Task List:
 //Build and export a function used to send in our authorization token
 
-export default connect(null, {})(axiosWithAuth);
+export default axiosWithAuth;

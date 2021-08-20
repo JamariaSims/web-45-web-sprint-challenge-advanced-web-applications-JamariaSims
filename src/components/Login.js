@@ -5,7 +5,6 @@ import LoginForm from "./LoginForm";
 const Login = (props) => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
-  console.log(props);
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -15,10 +14,8 @@ const Login = (props) => {
   return (
     <div>
       <h1>Welcome to the Bubble App!</h1>
-      {props.token ? (
-        <>
-          <BubblePage />
-        </>
+      {props.Token ? (
+        <BubblePage />
       ) : (
         <>
           {" "}
@@ -36,7 +33,6 @@ const Login = (props) => {
 function mapStateToProps(state) {
   return {
     error: state.error,
-    token: state.token,
   };
 }
 export default connect(mapStateToProps, {})(Login);

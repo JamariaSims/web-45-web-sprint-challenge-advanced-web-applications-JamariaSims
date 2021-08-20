@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Login from "./components/Login";
 import "./styles.scss";
-
+const Token = localStorage.getItem("TOKEN");
 function App() {
   return (
     <Router>
@@ -15,7 +15,7 @@ function App() {
           </a>
         </header>
         <Route absolute path="/">
-          <Login />
+          <Login Token={Token} />
         </Route>
         <Route path="/login">
           <Login />

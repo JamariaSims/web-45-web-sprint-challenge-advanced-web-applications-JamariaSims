@@ -1,42 +1,51 @@
-import React from "react";
-import { connect } from "react-redux";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
+import React, { useState } from "react";
+import { Provider } from "react-redux";
+import { Route, Switch, useHistory } from "react-router-dom";
 import Login from "./components/Login";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
+import reducer from "./reducer/reducer";
 import "./styles.scss";
-function App(props) {
-  const Token = JSON.parse(localStorage.getItem("TOKEN"));
+import PrivateRoute from "./components/PrivateRoute";
+import BubblePage from "./components/BubblePage";
+const store = createStore(reducer, applyMiddleware(thunk));
+const back = (window.history.href = "/");
+function App() {
+  const history = useHistory();
+
   return (
-    <Router>
-      <div className="App">
-        <header>
-          Color Picker Sprint Challenge
-          <a
-            onClick={() => {
-              localStorage.setItem("TOKEN", null);
-            }}
-            data-testid="logoutButton"
-            href={window.location.href}
-          >
-            logout
-          </a>
-        </header>
-        <Route absolute path="/">
-          <Login Token={Token} />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-      </div>
-    </Router>
+    <div className="App">
+      <header>
+        Color Picker Sprint Challenge
+        <a
+          onClick={() => {
+            localStorage.setItem("TOKEN", null);
+          }}
+          data-testid="logoutButton"
+          href={back}
+        >
+          logout
+        </a>
+      </header>
+      <Provider store={store}>
+        <Switch>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/PrivateRoute">
+            <PrivateRoute path="/PrivateRoute" component={BubblePage} />
+          </Route>
+        </Switch>
+      </Provider>
+    </div>
   );
 }
-const mapStateToProps = (state) => {
-  return {
-    userToken: state.userToken,
-  };
-};
-export default connect(mapStateToProps, {})(App);
+
+export default App;
 
 //Task List:
 //1. Add in two routes that link to the Login Component, one for the default path '/' and one for the '/login'.

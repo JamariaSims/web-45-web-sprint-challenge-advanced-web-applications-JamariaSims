@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import BubblePage from "./BubblePage";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,27 +13,28 @@ import Button from "@material-ui/core/Button";
 import { loginStart } from "../action/action";
 import PrivateRoute from "./PrivateRoute";
 const Login = (props) => {
-  // make a post request to retrieve a token from the api
-  // when you have handled the token, navigate to the BubblePage route
+  let history = useHistory();
   const [values, setValues] = useState({
     username: "",
     password: "",
     showPassword: false,
   });
-
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
-
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const handleSubmit = (event) => {
+    event.preventDefault();
     props.loginStart(values);
+    if (props.userToken) {
+      history.push("/PrivateRoute");
+      localStorage.setItem("TOKEN", JSON.stringify(props.userToken));
+    }
   };
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,61 +64,57 @@ const Login = (props) => {
   return (
     <div>
       <h1>Welcome to the Bubble App!</h1>
-      {props.Token ? (
-        <PrivateRoute />
-      ) : (
-        <>
-          <div data-testid="loginForm" className="login-form">
-            <div className={classes.root}>
-              <FormControl className={classes.input}>
-                <InputLabel>Username</InputLabel>
-                <Input
-                  id="username"
-                  type={"text"}
-                  value={values.username}
-                  onChange={handleChange("username")}
-                />
-              </FormControl>
-              <FormControl className={classes.input}>
-                <InputLabel>Password</InputLabel>
-                <Input
-                  id="password"
-                  type={values.showPassword ? "text" : "password"}
-                  value={values.password}
-                  onChange={handleChange("password")}
-                  endAdornment={
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  }
-                />
-                <Button
-                  id="submit"
-                  onClick={handleSubmit}
-                  className={classes.button}
-                  variant="outlined"
-                  color="primary"
+      <div data-testid="loginForm" className="login-form">
+        <div className={classes.root}>
+          <FormControl className={classes.input}>
+            <InputLabel>Username</InputLabel>
+            <Input
+              id="username"
+              type={"text"}
+              value={values.username}
+              onChange={handleChange("username")}
+            />
+          </FormControl>
+          <FormControl className={classes.input}>
+            <InputLabel>Password</InputLabel>
+            <Input
+              id="password"
+              type={values.showPassword ? "text" : "password"}
+              value={values.password}
+              onChange={handleChange("password")}
+              endAdornment={
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
                 >
-                  Login
-                </Button>
-              </FormControl>
-            </div>
-          </div>
-          <p id="error" className="error">
-            {error}
-          </p>
-        </>
-      )}
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              }
+            />
+
+            <Button
+              id="submit"
+              onClick={handleSubmit}
+              className={classes.button}
+              variant="outlined"
+              color="primary"
+            >
+              Login
+            </Button>
+          </FormControl>
+        </div>
+      </div>
+      <p id="error" className="error">
+        {error}
+      </p>
     </div>
   );
 };
 function mapStateToProps(state) {
   return {
     error: state.error,
+    userToken: state.userToken,
   };
 }
 export default connect(mapStateToProps, { loginStart })(Login);

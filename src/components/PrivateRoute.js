@@ -1,23 +1,23 @@
 //Task List:
 //1. Build a PrivateRoute component that redirects if user is not logged in
-
-import React from "react";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import BubblePage from "./BubblePage";
 import Login from "./Login";
+import { Component } from "react";
 
-function PrivateRoute(props) {
-  return props.token !== "" ? (
-    <>
-      <BubblePage />
-    </>
+function PrivateRoute({ children, ...rest }) {
+  const userToken = localStorage.getItem("TOKEN");
+  return userToken === null ? (
+    <Route
+      {...rest}
+      render={() => {
+        return children;
+      }}
+    />
   ) : (
-    <Login />
+    <Redirect to="/login" />
   );
 }
-function mapStateToProps(state) {
-  return {
-    token: state.token,
-  };
-}
-export default connect(mapStateToProps, {})(PrivateRoute);
+export default connect(null, {})(PrivateRoute);

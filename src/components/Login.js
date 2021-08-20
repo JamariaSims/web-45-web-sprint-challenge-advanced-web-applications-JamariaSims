@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
+import { loginStart } from "../action/action";
 
-const Login = () => {
+const Login = (props) => {
+  props.loginStart();
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
@@ -14,12 +17,14 @@ const Login = () => {
         <h2>Build login form here</h2>
       </div>
 
-      <p id="error" className="error">{error}</p>
+      <p id="error" className="error">
+        {error}
+      </p>
     </div>
   );
 };
 
-export default Login;
+export default connect(null, { loginStart })(Login);
 
 //Task List:
 //1. Build a form containing a username and password field.

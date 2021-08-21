@@ -12,7 +12,6 @@ import BubblePage from "./components/BubblePage";
 const store = createStore(reducer, applyMiddleware(thunk));
 const back = (window.history.href = "/");
 function App() {
-
   return (
     <div className="App">
       <header>

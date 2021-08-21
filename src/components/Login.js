@@ -67,6 +67,7 @@ const Login = (props) => {
           <FormControl className={classes.input}>
             <InputLabel>Username</InputLabel>
             <Input
+              data-testid="username"
               id="username"
               type={"text"}
               value={values.username}
@@ -76,6 +77,7 @@ const Login = (props) => {
           <FormControl className={classes.input}>
             <InputLabel>Password</InputLabel>
             <Input
+              data-testid="password"
               id="password"
               type={values.showPassword ? "text" : "password"}
               value={values.password}
@@ -93,6 +95,7 @@ const Login = (props) => {
 
             <Button
               id="submit"
+              data-testid="submit"
               onClick={handleSubmit}
               className={classes.button}
               variant="outlined"
@@ -103,7 +106,7 @@ const Login = (props) => {
           </FormControl>
         </div>
       </div>
-      <p id="error" className="error">
+      <p id="error" data-testid="error" className="error">
         {error}
       </p>
     </div>

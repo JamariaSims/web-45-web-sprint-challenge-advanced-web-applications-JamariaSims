@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import BubblePage from "./BubblePage";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
@@ -11,7 +10,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 import { loginStart } from "../action/action";
-import PrivateRoute from "./PrivateRoute";
 const Login = (props) => {
   let history = useHistory();
   const [values, setValues] = useState({

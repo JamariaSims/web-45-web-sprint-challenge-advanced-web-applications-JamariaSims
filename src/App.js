@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Provider } from "react-redux";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Login from "./components/Login";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -12,7 +12,6 @@ import BubblePage from "./components/BubblePage";
 const store = createStore(reducer, applyMiddleware(thunk));
 const back = (window.history.href = "/");
 function App() {
-  const history = useHistory();
 
   return (
     <div className="App">

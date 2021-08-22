@@ -10,6 +10,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 import { loginStart } from "../action/action";
+import { useEffect } from "react";
 const Login = (props) => {
   let history = useHistory();
   const [values, setValues] = useState({
@@ -29,12 +30,13 @@ const Login = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     props.loginStart(values);
+  };
+  useEffect(() => {
     if (props.userToken) {
       localStorage.setItem("TOKEN", JSON.stringify(props.userToken));
       history.push("/PrivateRoute");
     }
-  };
-
+  }, [props]);
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",

@@ -5,11 +5,10 @@ const initialState = {
   error: "",
   userToken: "",
   isFetching: false,
-}; 
+};
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_START: {
-
       return { ...state, isFetching: true };
     }
     case LOGIN_SUCCUSS: {
